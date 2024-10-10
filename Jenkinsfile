@@ -21,29 +21,27 @@ pipeline {
             }
         }
 
-        stage('Maven Build and Install') {
-            steps {
-                sh 'mvn clean install package'
-            }
-        }
+       stage('Maven Build and Install') {
+           steps {
+               bat 'mvn clean install package'
+           }
+       }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh 'docker build -t trust-spring-jenkin .'
-                }
-            }
-        }
+       stage('Build Docker Image') {
+           steps {
+               bat 'docker build -t trust-spring-jenkin .'
+           }
+       }
 
-        stage('Push Docker Image to Dockerhub') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'theinzawwin-dockerhub', variable: 'DOCKER_PASSWORD')]) {
-                        sh 'docker login -u theinzawwin -p ${DOCKER_PASSWORD}'
-                    }
-                    sh 'docker push theinzawwin/trust-spring-jenkin'
-                }
-            }
-        }
+       stage('Push Docker Image to Dockerhub') {
+           steps {
+               script {
+                   withCredentials([string(credentialsId: 'theinzawwin-dockerhub', variable: 'DOCKER_PASSWORD')]) {
+                       bat 'docker login -u theinzawwin -p %DOCKER_PASSWORD%'
+                   }
+                   bat 'docker push theinzawwin/trust-spring-jenkin'
+               }
+           }
+       }
     }
 }
