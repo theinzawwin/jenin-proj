@@ -7,19 +7,23 @@ pipeline {
     stages{
         stage('Maven Clean Install'){
             steps {
+                script{
                     try {
-                            checkout scm: [
-                                $class: 'GitSCM',
-                                branches: [[name: 'main']],
-                                userRemoteConfig: [
-                                    url: 'https://github.com/theinzawwin/jenin-proj.git',
-                                    credentialsId: 'theinzawwin-github'
-                                ]
-                            ]
-                        }catch (Exception e) {
-                                                                     error "Failed to checkout repository: ${e.message}"
-                        }
-                    }
+                                                checkout scm: [
+                                                    $class: 'GitSCM',
+                                                    branches: [[name: 'main']],
+                                                    userRemoteConfig: [
+                                                        url: 'https://github.com/theinzawwin/jenin-proj.git',
+                                                        credentialsId: 'theinzawwin-github'
+                                                    ]
+                                                ]
+                                           } catch (Exception e) {
+                                               echo "Failed to checkout repository: ${e.message}"
+                                            }
+
+                }
+
+              }
         }
         stage('Maven Build and Install') {
                     steps {
