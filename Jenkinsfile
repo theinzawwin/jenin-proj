@@ -7,6 +7,7 @@ pipeline {
     stages{
         stage('Maven Clean Install'){
             steps {
+                    try {
                             checkout scm: [
                                 $class: 'GitSCM',
                                 branches: [[name: 'main']],
@@ -15,7 +16,10 @@ pipeline {
                                     credentialsId: 'theinzawwin-github'
                                 ]
                             ]
+                        }catch (Exception e) {
+                                                                     error "Failed to checkout repository: ${e.message}"
                         }
+                    }
         }
         stage('Maven Build and Install') {
                     steps {
