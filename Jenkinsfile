@@ -6,12 +6,22 @@ pipeline {
 
     stages{
         stage('Maven Clean Install'){
-            steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/theinzawwin/jenin-proj.git']])
-                sh 'mvn -version'
-                sh 'mvn clean install'
-            }
+            steps {
+                            checkout scm: [
+                                $class: 'GitSCM',
+                                branches: [[name: 'main']],
+                                userRemoteConfig: [
+                                    url: 'https://github.com/theinzawwin/jenin-proj.git',
+                                    credentialsId: 'theinzawwin-github'
+                                ]
+                            ]
+                        }
         }
+        stage('Maven Build and Install') {
+                    steps {
+                        sh 'mvn clean install package'
+                    }
+                }
         stage('Build Docker Image'){
             steps{
                 script{
