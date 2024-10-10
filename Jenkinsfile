@@ -36,11 +36,12 @@ pipeline {
        stage('Push Docker Image to Dockerhub') {
            steps {
                script {
-                   withCredentials([string(credentialsId: 'theinzawwin-dockerhub', variable: 'DOCKER_PASSWORD')]) {
-                       bat 'docker login -u theinzawwin -p %DOCKER_PASSWORD%'
-                   }
-                   bat 'docker push theinzawwin/trust-spring-jenkin'
-               }
+                                   // Use usernamePassword for DockerHub login
+                                   withCredentials([usernamePassword(credentialsId: 'theinzawwin-dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                       bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASSWORD%'
+                                   }
+                                   bat 'docker push theinzawwin/trust-spring-jenkin'
+                               }
            }
        }
     }
