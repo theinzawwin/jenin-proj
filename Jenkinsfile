@@ -9,16 +9,13 @@ pipeline {
             steps {
                 script{
                     try {
-                                                checkout scm: [
-                                                    $class: 'GitSCM',
-                                                    branches: [[name: 'main']],
-                                                    userRemoteConfig: [
-                                                        url: 'https://github.com/theinzawwin/jenin-proj.git',
-                                                        credentialsId: 'theinzawwin-github'
-                                                    ]
-                                                ]
+                                                checkout([$class: 'GitSCM',
+                                                                          branches: [[name: '*/main']],
+                                                                          userRemoteConfigs: [[url: 'https://github.com/theinzawwin/jenin-proj.git', credentialsId: 'theinzawwin-github']],
+                                                                          extensions: []
+                                                                ])
                                            } catch (Exception e) {
-                                               echo "Failed to checkout repository: ${e.message}"
+                                               echo "TZW Failed to checkout repository: ${e.message}"
                                             }
 
                 }
