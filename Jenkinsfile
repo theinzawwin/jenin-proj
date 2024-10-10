@@ -3,9 +3,7 @@ pipeline {
     tools{
         maven 'maven_3_8_3'
     }
-    environment {
-                    DOCKER_HUB_CREDENTIALS = credentialsId
-                }
+
     stages{
         stage('Maven Clean Install'){
             steps{
