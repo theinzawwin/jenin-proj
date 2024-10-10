@@ -29,7 +29,7 @@ pipeline {
 
        stage('Build Docker Image') {
            steps {
-               bat 'docker build -t trust-spring-jenkin .'
+               bat 'docker build -t theinzawwin/trust-spring-jenkin:latest .'
            }
        }
 
