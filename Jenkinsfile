@@ -40,9 +40,17 @@ pipeline {
                                    withCredentials([usernamePassword(credentialsId: 'theinzawwin-dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                                        bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASSWORD%'
                                    }
-                                   bat 'docker push theinzawwin/trust-spring-jenkin'
+                                   bat 'docker push theinzawwin/trust-spring-jenkin:latest'
                                }
            }
        }
+       stage('Deploy to Kubernetes') {
+                   steps {
+                       script {
+                           // Deploy to Kubernetes using kubectl command
+                           bat "kubectl apply -f kubernetes/deployment-service.yml --kubeconfig %kubernetes-config%"
+                       }
+                   }
+               }
     }
 }

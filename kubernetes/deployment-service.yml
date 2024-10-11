@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trust-spring-jenkin
+  labels:
+    app: trust-spring-jenkin
+spec:
+  replicas: 3  # Number of instances of the application
+  selector:
+    matchLabels:
+      app: trust-spring-jenkin
+  template:
+    metadata:
+      labels:
+        app: trust-spring-jenkin
+    spec:
+      containers:
+        - name: trust-spring-jenkin
+          image: theinzawwin/trust-spring-jenkin:latest  # Replace with your Docker image
+          ports:
+            - containerPort: 8080  # The port your Spring Boot app runs on
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"  # Example of passing an environment variable
+          # Add any additional environment variables or configurations as needed
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: trust-spring-service
+spec:
+  type: LoadBalancer  # Use NodePort for internal access or LoadBalancer for external access
+  ports:
+    - port: 80       # The port exposed by the service
+      targetPort: 8080  # The port on which the application is running
+  selector:
+    app: trust-spring-jenkin  # This should match the label in the Deployment
